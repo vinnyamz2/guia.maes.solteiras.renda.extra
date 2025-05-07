@@ -709,6 +709,7 @@
             localStorage.setItem('submittedLeads', JSON.stringify(leads));
             localStorage.setItem('formSubmitted', 'true');
             userName = name; // Store the name for personalization
+            localStorage.setItem('userName', name); // Salva o nome no localStorage
             personalizeContent(); // Update the content with the user's name
         }
         
@@ -883,6 +884,13 @@
         document.querySelectorAll('.slide-up').forEach(el => {
             observer.observe(el);
         });
+        document.addEventListener('DOMContentLoaded', function () {
+            const savedName = localStorage.getItem('userName');
+            if (savedName) {
+              userName = savedName;
+              personalizeContent();
+            }
+          });          
     </script>
 </body>
 </html>
