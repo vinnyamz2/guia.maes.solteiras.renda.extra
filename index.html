@@ -229,7 +229,7 @@
             border: none;
             color: white;
             font-size: 1.2rem;
-            cursor: pointer;
+            cursor: button;
         }
         
         .thank-you-message {
@@ -254,6 +254,36 @@
             font-size: 2.5rem;
             color: #f59e0b;
             margin-bottom: 15px;
+        }
+        
+        /* New styles for form submission handling */
+        .form-container {
+            transition: all 0.3s ease;
+        }
+        
+        .form-hidden {
+            display: none !important;
+        }
+        
+        .submission-message {
+            display: none;
+            padding: 20px;
+            text-align: center;
+            background: #f0fdf4;
+            border-radius: 8px;
+            margin-top: 15px;
+            border: 1px solid #bbf7d0;
+        }
+        
+        .submission-message i {
+            color: #4ade80;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .submission-message p {
+            color: #166534;
+            font-weight: 500;
         }
     </style>
 </head>
@@ -341,6 +371,7 @@
                     </div>
                 </div>
                 
+            
                 <div class="bg-white p-8 rounded-2xl shadow-lg flex items-start slide-up delay-1">
                     <div class="bg-purple-100 p-4 rounded-full mr-6 text-purple-600 flex-shrink-0">
                         <i class="fas fa-graduation-cap text-2xl"></i>
@@ -355,7 +386,7 @@
                     <div class="bg-amber-100 p-4 rounded-full mr-6 text-amber-600 flex-shrink-0">
                         <i class="fas fa-bolt text-2xl"></i>
                     </div>
-                    {
+                    <div>
                         <h3 class="text-xl font-semibold text-gray-800 mb-3">Começo imediato</h3>
                         <p class="text-gray-600">Você pode começar a aplicar as estratégias hoje mesmo, sem esperar por cursos longos ou burocracias.</p>
                     </div>
@@ -558,29 +589,36 @@
             <span onclick="closeLeadModal()" class="float-right text-gray-500 hover:text-gray-700 cursor-pointer text-2xl">&times;</span>
             <h3 class="text-2xl font-bold text-purple-800 mb-6">Conte-nos mais sobre você</h3>
             
-            <form id="leadForm" action="https://formsubmit.co/guialeads00@gmail.com" method="POST">
-                <input type="hidden" name="_subject" value="Novo lead do Guia para Mães">
-                <input type="hidden" name="_next" value="#thankyou">
-                
-                <div class="mb-4">
-                    <label for="name" class="block text-gray-700 mb-2">Nome</label>
-                    <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent">
-                </div>
-                
-                <div class="mb-4">
-                    <label for="email" class="block text-gray-700 mb-2">E-mail</label>
-                    <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent">
-                </div>
-                
-                <div class="mb-6">
-                    <label for="whatsapp" class="block text-gray-700 mb-2">WhatsApp</label>
-                    <input type="tel" id="whatsapp" name="whatsapp" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent">
-                </div>
-                
-                <button type="button" onclick="submitLeadForm()" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-3 px-6 rounded-xl hover:from-pink-600 hover:to-purple-700 transition duration-200">
-                    Enviar e continuar
-                </button>
-            </form>
+            <div id="formContainer" class="form-container">
+                <form id="leadForm" action="https://formsubmit.co/guialeads00@gmail.com" method="POST">
+                    <input type="hidden" name="_subject" value="Novo lead do Guia para Mães">
+                    <input type="hidden" name="_next" value="#thankyou">
+                    
+                    <div class="mb-4">
+                        <label for="name" class="block text-gray-700 mb-2">Nome</label>
+                        <input type="text" id="name" name="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent" required>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <label for="email" class="block text-gray-700 mb-2">E-mail</label>
+                        <input type="email" id="email" name="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent" required>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label for="whatsapp" class="block text-gray-700 mb-2">WhatsApp</label>
+                        <input type="tel" id="whatsapp" name="whatsapp" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent" required>
+                    </div>
+                    
+                    <button type="button" onclick="submitLeadForm()" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-3 px-6 rounded-xl hover:from-pink-600 hover:to-purple-700 transition duration-200">
+                        Enviar e continuar
+                    </button>
+                </form>
+            </div>
+            
+            <div id="submissionMessage" class="submission-message">
+                <i class="fas fa-check-circle"></i>
+                <p>Você já enviou seus dados. Obrigado!</p>
+            </div>
         </div>
     </div>
 
@@ -595,9 +633,9 @@
                 <input type="hidden" name="_subject" value="Novo lead do Popup">
                 <input type="hidden" name="_next" value="#thankyou">
                 
-                <input type="text" name="name" placeholder="Nome" class="mb-3">
-                <input type="email" name="email" placeholder="E-mail" class="mb-3">
-                <input type="tel" name="whatsapp" placeholder="WhatsApp">
+                <input type="text" name="name" placeholder="Nome" class="mb-3" required>
+                <input type="email" name="email" placeholder="E-mail" class="mb-3" required>
+                <input type="tel" name="whatsapp" placeholder="WhatsApp" required>
             </form>
         </div>
         <div class="lead-popup-footer">
@@ -662,7 +700,7 @@
     <div class="bg-gray-50 py-10 px-6 sm:px-8 lg:px-10 text-center">
         <div class="max-w-4xl mx-auto">
             <p class="text-gray-400 text-sm">
-                Este é um guia com sugestões práticas, baseadas em experiências reais. Por ser um conteúdo digital entregue imediatamente, não oferecemos reembolso.
+                Este é um guia com sugestões práticas, baseadas em experiências real. Por ser um conteúdo digital entregue imediatamente, não oferecemos reembolso.
             </p>
             <p class="text-gray-400 text-xs mt-4">
                 © 2023 Como mães solteiras fazem até 3 mil reais por mês. Todos os direitos reservados.
@@ -697,12 +735,17 @@
         
         // Lead Modal Functions
         function openLeadModal() {
-            if (hasSubmittedForm()) {
-                showAlreadySubmittedMessage();
-                return;
-            }
             document.getElementById('leadModal').style.display = 'block';
             document.body.style.overflow = 'hidden';
+            
+            // Check if form was already submitted
+            if (hasSubmittedForm()) {
+                document.getElementById('formContainer').classList.add('form-hidden');
+                document.getElementById('submissionMessage').style.display = 'block';
+            } else {
+                document.getElementById('formContainer').classList.remove('form-hidden');
+                document.getElementById('submissionMessage').style.display = 'none';
+            }
         }
         
         function closeLeadModal() {
@@ -720,12 +763,19 @@
             const email = emailInput.value.trim();
             const whatsapp = whatsappInput.value.trim();
             
+            // Validate required fields
+            if (!name || !email || !whatsapp) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
+            
             // Store name for personalization
             userName = name;
             
             // Check for duplicates
             if (isDuplicateLead(name, email, whatsapp)) {
-                showAlreadySubmittedMessage();
+                document.getElementById('formContainer').classList.add('form-hidden');
+                document.getElementById('submissionMessage').style.display = 'block';
                 closeLeadModal();
                 return;
             }
@@ -733,19 +783,20 @@
             // Store the lead data
             storeLeadData(name, email, whatsapp);
             
-            // Close the modal
-            closeLeadModal();
+            // Hide form and show submission message
+            document.getElementById('formContainer').classList.add('form-hidden');
+            document.getElementById('submissionMessage').style.display = 'block';
             
             // Personalize content if name is provided
             if (userName) {
                 personalizeContent();
             }
             
-            // Open the PIX modal
-            openPixModal();
-            
             // Submit the form
             document.getElementById('leadForm').submit();
+            
+            // Open the PIX modal after a short delay
+            setTimeout(openPixModal, 1000);
         }
         
         // Personalize content with user's name
@@ -802,6 +853,12 @@
             const name = form.elements['name'].value.trim();
             const email = form.elements['email'].value.trim();
             const whatsapp = form.elements['whatsapp'].value.trim();
+            
+            // Validate required fields
+            if (!name || !email || !whatsapp) {
+                alert('Por favor, preencha todos os campos obrigatórios.');
+                return;
+            }
             
             // Check for duplicates
             if (isDuplicateLead(name, email, whatsapp)) {
