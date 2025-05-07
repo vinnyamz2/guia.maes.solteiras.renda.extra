@@ -313,7 +313,7 @@
                 </div>
                 
                 <div class="mt-12 slide-up delay-2">
-                    <button onclick="openLeadModal()" id="mainCta" class="btn-pulse inline-block bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-4 px-8 rounded-full text-lg shadow-xl hover:shadow-2xl transition duration-300">
+                    <button onclick="handleCtaClick()" id="mainCta" class="btn-pulse inline-block bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-4 px-8 rounded-full text-lg shadow-xl hover:shadow-2xl transition duration-300">
                         Quero transformar minha vida agora!
                     </button>
                 </div>
@@ -430,7 +430,7 @@
                     </div>
                     <div class="relative">
                         <i class="fas fa-quote-left text-pink-200 text-4xl absolute -top-2 -left-2"></i>
-                        <p class="text-gray-600 italic relative z-10 pl-6">"Esse guia me deu coragem. Eu não sabia por onde começar, mas agora vendo docinhos e já tenho 6 clientes fixas. Não é só o dinheiro — é a autoestima que voltou."</p>
+                        <p class="text-gray-600 italic relative z-10 pl-6">"Esse guia me deu coragem. Eu não sabia por onde começar, mais agora vendo docinhos e já tenho 6 clientes fixas. Não é só o dinheiro — é a autoestima que voltou."</p>
                     </div>
                 </div>
                 
@@ -502,7 +502,7 @@
             </div>
             
             <div class="mt-8">
-                <button onclick="openLeadModal()" id="bottomCta" class="btn-pulse bg-white text-pink-600 font-bold py-5 px-10 rounded-full text-xl shadow-xl hover:shadow-2xl transition duration-300 flex items-center mx-auto">
+                <button onclick="handleCtaClick()" id="bottomCta" class="btn-pulse bg-white text-pink-600 font-bold py-5 px-10 rounded-full text-xl shadow-xl hover:shadow-2xl transition duration-300 flex items-center mx-auto">
                     <i class="fas fa-shopping-cart mr-4 text-2xl"></i> COMPRAR AGORA
                 </button>
                 
@@ -561,7 +561,7 @@
             <p class="text-xl text-gray-700 mb-8">Comece hoje mesmo a transformar sua realidade</p>
             
             <div class="mt-8">
-                <button onclick="openLeadModal()" id="finalCta" class="btn-pulse bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-5 px-10 rounded-full text-xl shadow-xl hover:shadow-2xl transition duration-300 flex items-center mx-auto">
+                <button onclick="handleCtaClick()" id="finalCta" class="btn-pulse bg-gradient-to-r from-pink-500 to-purple-600 text-white font-bold py-5 px-10 rounded-full text-xl shadow-xl hover:shadow-2xl transition duration-300 flex items-center mx-auto">
                     <i class="fas fa-arrow-alt-circle-down mr-4 text-2xl"></i> QUERO MEU ACESSO IMEDIATO
                 </button>
             </div>
@@ -614,11 +614,6 @@
                     </button>
                 </form>
             </div>
-            
-            <div id="submissionMessage" class="submission-message">
-                <i class="fas fa-check-circle"></i>
-                <p>Você já enviou seus dados. Obrigado!</p>
-            </div>
         </div>
     </div>
 
@@ -642,24 +637,6 @@
             <button onclick="submitPopupForm()" class="bg-pink-500 text-white px-4 py-2 rounded-lg hover:bg-pink-600 transition duration-200">
                 Enviar
             </button>
-        </div>
-    </div>
-
-    <!-- Thank You Message -->
-    <div id="thankYouMessage" class="lead-popup" style="display: none;">
-        <div class="lead-popup-body thank-you-message">
-            <i class="fas fa-check-circle"></i>
-            <h3 class="text-xl font-bold text-purple-800 mb-2">Obrigado!</h3>
-            <p class="text-gray-700">Em breve entraremos em contato.</p>
-        </div>
-    </div>
-
-    <!-- Already Submitted Message -->
-    <div id="alreadySubmittedMessage" class="lead-popup" style="display: none;">
-        <div class="lead-popup-body already-submitted-message">
-            <i class="fas fa-info-circle"></i>
-            <h3 class="text-xl font-bold text-purple-800 mb-2">Você já enviou seus dados</h3>
-            <p class="text-gray-700">Obrigado por seu interesse! Já recebemos suas informações.</p>
         </div>
     </div>
 
@@ -733,19 +710,21 @@
             localStorage.setItem('formSubmitted', 'true');
         }
         
+        // Handle CTA button click
+        function handleCtaClick() {
+            if (hasSubmittedForm()) {
+                // If form was already submitted, go directly to PIX modal
+                openPixModal();
+            } else {
+                // If form was not submitted, open lead modal
+                openLeadModal();
+            }
+        }
+        
         // Lead Modal Functions
         function openLeadModal() {
             document.getElementById('leadModal').style.display = 'block';
             document.body.style.overflow = 'hidden';
-            
-            // Check if form was already submitted
-            if (hasSubmittedForm()) {
-                document.getElementById('formContainer').classList.add('form-hidden');
-                document.getElementById('submissionMessage').style.display = 'block';
-            } else {
-                document.getElementById('formContainer').classList.remove('form-hidden');
-                document.getElementById('submissionMessage').style.display = 'none';
-            }
         }
         
         function closeLeadModal() {
@@ -772,31 +751,20 @@
             // Store name for personalization
             userName = name;
             
-            // Check for duplicates
-            if (isDuplicateLead(name, email, whatsapp)) {
-                document.getElementById('formContainer').classList.add('form-hidden');
-                document.getElementById('submissionMessage').style.display = 'block';
-                closeLeadModal();
-                return;
-            }
-            
             // Store the lead data
             storeLeadData(name, email, whatsapp);
             
-            // Hide form and show submission message
-            document.getElementById('formContainer').classList.add('form-hidden');
-            document.getElementById('submissionMessage').style.display = 'block';
+            // Submit the form
+            document.getElementById('leadForm').submit();
+            
+            // Close lead modal and open PIX modal
+            closeLeadModal();
+            openPixModal();
             
             // Personalize content if name is provided
             if (userName) {
                 personalizeContent();
             }
-            
-            // Submit the form
-            document.getElementById('leadForm').submit();
-            
-            // Open the PIX modal after a short delay
-            setTimeout(openPixModal, 1000);
         }
         
         // Personalize content with user's name
@@ -860,46 +828,14 @@
                 return;
             }
             
-            // Check for duplicates
-            if (isDuplicateLead(name, email, whatsapp)) {
-                showAlreadySubmittedMessage();
-                closeLeadPopup();
-                return;
-            }
-            
             // Store the lead data
             storeLeadData(name, email, whatsapp);
             
             // Submit the form
             form.submit();
             
-            // Hide the popup and show thank you message
+            // Hide the popup
             closeLeadPopup();
-            showThankYouMessage();
-        }
-        
-        function showThankYouMessage() {
-            const thankYou = document.getElementById('thankYouMessage');
-            thankYou.style.display = 'block';
-            thankYou.classList.add('show');
-            
-            // Hide thank you message after 5 seconds
-            setTimeout(() => {
-                thankYou.classList.remove('show');
-                thankYou.style.display = 'none';
-            }, 5000);
-        }
-        
-        function showAlreadySubmittedMessage() {
-            const alreadySubmitted = document.getElementById('alreadySubmittedMessage');
-            alreadySubmitted.style.display = 'block';
-            alreadySubmitted.classList.add('show');
-            
-            // Hide message after 5 seconds
-            setTimeout(() => {
-                alreadySubmitted.classList.remove('show');
-                alreadySubmitted.style.display = 'none';
-            }, 5000);
         }
         
         // Pix Modal Functions
