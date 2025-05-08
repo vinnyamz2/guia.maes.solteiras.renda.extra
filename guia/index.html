@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -9,7 +8,413 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
     <!-- Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth; /* Enables smooth scrolling */
+            /* Add scroll-padding-top to globally offset scroll target */
+            scroll-padding-top: 70px; /* Adjust based on final nav/header height */
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            background: linear-gradient(135deg, #fff0f5, #e6e6fa, #f0f8ff); /* LavenderBlush, Lavender, AliceBlue gradient */
+            color: #333;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+            position: relative; /* Needed for absolute positioning of shapes */
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        /* Background Shapes Animation */
+        .background-shapes {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .background-shapes::before,
+        .background-shapes::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.15;
+            animation: moveShapes 25s linear infinite alternate;
+        }
+
+        .background-shapes span {
+            position: absolute;
+            border-radius: 50%;
+            opacity: 0.15;
+            animation: moveShapes 30s linear infinite alternate;
+            display: block;
+        }
+
+        .background-shapes::before {
+            width: 100px;
+            height: 100px;
+            background-color: #ffb6c1; /* LightPink */
+            top: 10%;
+            left: 5%;
+            animation-duration: 30s;
+        }
+
+        .background-shapes::after {
+            width: 150px;
+            height: 150px;
+            background-color: #add8e6; /* LightBlue */
+            bottom: 15%;
+            right: 10%;
+            animation-duration: 25s;
+            animation-delay: -5s;
+        }
+
+        @keyframes moveShapes {
+            0% {
+                transform: translateY(0) translateX(0) rotate(0deg);
+            }
+            50% {
+                transform: translateY(20px) translateX(-30px) rotate(180deg);
+                 opacity: 0.2;
+            }
+            100% {
+                transform: translateY(-10px) translateX(15px) rotate(360deg);
+            }
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding-top: 20px;
+        }
+
+        header h1 {
+            font-family: 'Dancing Script', cursive;
+            font-size: 2.5em;
+            color: #8a2be2; /* BlueViolet */
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* Intro Section */
+        .intro {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+            color: #555;
+            padding: 0 15px;
+        }
+
+        /* Category Navigation */
+        .category-nav {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .category-nav h2 {
+            font-family: 'Dancing Script', cursive;
+            color: #ff69b4; /* HotPink */
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        .category-buttons {
+            display: flex;
+            flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+            justify-content: center;
+            gap: 15px; /* Space between buttons */
+            padding: 0 10px;
+        }
+
+        .category-button {
+            display: inline-flex; /* Use flex to align icon and text */
+            align-items: center;
+            gap: 8px; /* Space between icon and text */
+            background: linear-gradient(135deg, #ffb6c1, #ffa07a); /* LightPink to LightSalmon */
+            color: white;
+            padding: 10px 20px; /* Adjust padding */
+            text-decoration: none;
+            border-radius: 25px; /* Pill shape */
+            font-weight: 600;
+            font-size: 1em;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        .category-button i {
+            font-size: 1.1em; /* Adjust icon size */
+        }
+
+        .category-button:hover,
+        .category-button:focus {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            background: linear-gradient(135deg, #ffa07a, #ffb6c1); /* Invert gradient on hover */
+        }
+
+        /* Intra-Category Navigation */
+        .intra-category-nav {
+            text-align: center;
+            margin-bottom: 25px;
+            margin-top: -10px; /* Pull it closer to the category title */
+            font-size: 0.95em;
+            color: #666;
+        }
+
+        .intra-category-nav span {
+            font-weight: 600;
+            margin-right: 10px;
+            color: #8a2be2; /* BlueViolet */
+        }
+
+        .intra-category-nav a {
+            display: inline-block;
+            margin: 0 5px;
+            padding: 3px 8px;
+            background-color: #f0e6ff; /* Light lavender background */
+            color: #8a2be2; /* BlueViolet */
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .intra-category-nav a:hover,
+        .intra-category-nav a:focus {
+            background-color: #ffb6c1; /* LightPink */
+            color: white;
+        }
+
+
+        /* Category Titles */
+        .category-title {
+            font-family: 'Dancing Script', cursive;
+            text-align: center;
+            font-size: 2.2em;
+            color: #8a2be2; /* BlueViolet */
+            margin-top: 50px;
+            margin-bottom: 30px; /* Increased slightly to give space for intra-nav */
+            text-shadow: 1px 1px 2px rgba(255, 105, 180, 0.3);
+            position: relative;
+        }
+
+        /* Idea Sections */
+        .ideas-content {
+            margin-top: 30px;
+        }
+
+        .idea-section {
+            background-color: transparent;
+            padding: 25px;
+            margin-bottom: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #ffc0cb; /* Pink border */
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .idea-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: var(--bg-image-url, none);
+            background-size: cover;
+            background-position: center;
+            opacity: 0.15;
+            z-index: -1;
+            border-radius: 10px;
+            background-color: rgba(255, 255, 255, 0.6);
+        }
+
+        .idea-section > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        .idea-section:nth-child(odd) { /* Note: This will alternate based on ALL sections, not within category */
+             border-left-color: #add8e6; /* LightBlue border for variety */
+        }
+
+        .idea-section h2 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            color: #ff69b4; /* HotPink */
+            margin-bottom: 15px;
+            font-size: 1.6em;
+        }
+
+        .idea-section h3 {
+            font-weight: 600;
+            color: #8a2be2; /* BlueViolet */
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .idea-section p,
+        .idea-section li {
+            color: #444;
+            margin-bottom: 10px;
+            font-size: 1em;
+        }
+
+        .idea-section ol,
+        .idea-section ul {
+            margin-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        .idea-section a {
+            color: #ff69b4; /* HotPink */
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+
+        .idea-section a:hover {
+            color: #8a2be2; /* BlueViolet */
+            text-decoration: underline;
+        }
+
+        /* Fade-in Animation */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+        }
+
+        /* Staggered animations */
+        .idea-section.fade-in,
+        .category-title.fade-in,
+        .category-nav.fade-in, /* Add new nav to stagger */
+        .final-message.fade-in {
+            animation-delay: calc(0.08s * var(--section-index, 1)); /* Faster stagger */
+        }
+
+        /* Final Message Section Style */
+        .final-message {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 20px;
+            padding: 25px;
+            background: linear-gradient(135deg, #e6e6fa, #fff0f5);
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .final-message p {
+            font-family: 'Dancing Script', cursive;
+            font-size: 1.8em;
+            color: #8a2be2;
+            line-height: 1.4;
+            margin-bottom: 0;
+        }
+
+        /* Mobile Responsiveness */
+        @media (max-width: 600px) {
+            html {
+                scroll-padding-top: 60px; /* Adjust for mobile */
+            }
+
+            header h1 {
+                font-size: 2em;
+            }
+
+            .intro {
+                font-size: 1em;
+            }
+
+            /* Adjust category button layout for smaller screens */
+             .category-buttons {
+                gap: 10px;
+            }
+            .category-button {
+                padding: 8px 15px;
+                font-size: 0.9em;
+            }
+
+            .category-title {
+                font-size: 1.8em;
+                margin-top: 40px;
+                margin-bottom: 25px;
+            }
+
+             .intra-category-nav {
+                font-size: 0.9em;
+                margin-bottom: 20px;
+            }
+            .intra-category-nav a {
+                padding: 2px 6px;
+                margin: 0 3px;
+            }
+
+
+            .idea-section {
+                padding: 20px;
+            }
+
+            .idea-section h2 {
+                font-size: 1.4em;
+            }
+
+            .idea-section h3 {
+                font-size: 1.2em;
+            }
+
+            .idea-section p,
+            .idea-section li {
+                font-size: 0.95em;
+            }
+
+            .final-message p {
+                font-size: 1.5em;
+            }
+
+            .container {
+                padding: 15px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="background-shapes">
